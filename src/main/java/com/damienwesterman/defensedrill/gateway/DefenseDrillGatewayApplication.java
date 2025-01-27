@@ -35,6 +35,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class DefenseDrillGatewayApplication {
 	// TODO: Test to make sure that streaming video through this gateway works
 	// TODO: Do a filter or something to only allow connection to certain endpoints from local networks
+	// TODO: Address any startup warnings
 
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillGatewayApplication.class, args);

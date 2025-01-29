@@ -9,7 +9,7 @@
  *                            *
  \****************************/
 /*
- * Copyright 2024 Damien Westerman
+ * Copyright 2025 Damien Westerman
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,12 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class DefenseDrillGatewayApplication {
 	// TODO: Test to make sure that streaming video through this gateway works
 	// TODO: Do a filter or something to only allow connection to certain endpoints from local networks
+	// TODO: implement jwt filter
+	// TODO: Separate authorized endpoints (swagger, all api stuff, all mvc stuff) from public (all security stuff, main.css, main.js, favicon.ico)
+	// TODO: do the cert stuff and activate https (in prod)
 	// TODO: Address any startup warnings
+	// TODO: Send error handling downstream to mvc somehow?
+	// TODO: Finish the security TO-DOs
 
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillGatewayApplication.class, args);

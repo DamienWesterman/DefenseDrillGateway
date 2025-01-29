@@ -33,14 +33,15 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillGatewayApplication {
-	// TODO: Test to make sure that streaming video through this gateway works
 	// TODO: Do a filter or something to only allow connection to certain endpoints from local networks
 	// TODO: implement jwt filter
 	// TODO: Separate authorized endpoints (swagger, all api stuff, all mvc stuff) from public (all security stuff, main.css, main.js, favicon.ico)
+	// TODO: Take a look at each and every endpoint reported in the spring boot dashboard for every microservice
 	// TODO: do the cert stuff and activate https (in prod)
 	// TODO: Address any startup warnings
 	// TODO: Send error handling downstream to mvc somehow?
 	// TODO: Finish the security TO-DOs
+	// TODO: Check to see what actuator info is available outside of the network
 
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillGatewayApplication.class, args);

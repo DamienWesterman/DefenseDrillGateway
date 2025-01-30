@@ -33,8 +33,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillGatewayApplication {
-	// TODO: implement jwt filter
-	// TODO: Separate authorized endpoints (swagger, all api stuff, all mvc stuff) from public (all security stuff, main.css, main.js, favicon.ico)
 	// TODO: Take a look at each and every endpoint reported in the spring boot dashboard for every microservice
 	// TODO: do the cert stuff and activate https (in prod)
 	// TODO: Address any startup warnings

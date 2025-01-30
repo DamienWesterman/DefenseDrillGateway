@@ -26,6 +26,8 @@
 
 package com.damienwesterman.defensedrill.gateway.filter;
 
+import java.net.InetAddress;
+
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,7 @@ import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * TODO: Doc comments
+ * Filter to check if a request is coming from inside a private network, otherwise request is refused.
  */
 @Component
 @Slf4j
@@ -48,26 +50,32 @@ public class LocalNetworkFilter
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-            String clientIp = exchange.getRequest().getHeaders().getFirst("X-Forwarded-For");
             boolean isLocalNetworkRequest = false;
-            // TODO: FIXME: START HERE:
-            /*
-             * User https://en.wikipedia.org/wiki/Reserved_IP_addresses and sort by Scope, and use all Private Network addresses
-             *      This will go well with solutions from https://stackoverflow.com/questions/577363/how-to-check-if-an-ip-address-is-from-a-particular-network-netmask-in-java
-             * Also make sure to check things like exchange.getRequest().getRemoteAddress().getAddress().isLinkLocalAddress() AND exchange.getRequest().getRemoteAddress().getAddress().isLoopbackAddress()
-             * Check the latency on these things, don't want it to be too long, though it shouldn't
-             */
-            if (null != clientIp) {
-                if (clientIp.startsWith("192.168.")
-                        || clientIp.startsWith("10.")
-                        || clientIp.equals("127.0.0.1")) {
-                    isLocalNetworkRequest = true;
+            String clientIpString = "UNKNOWN";
+
+            if (null != exchange.getRequest().getRemoteAddress()) {
+                InetAddress clientIp = exchange.getRequest().getRemoteAddress().getAddress();
+                clientIpString = clientIp.toString();
+                // Strip the leading '/', don't know why it's there
+                clientIpString = clientIpString.substring(1);
+
+                if (null != clientIp) {
+                    if (clientIpString.startsWith("192.168.")
+                            || clientIpString.startsWith("10.")
+                            || clientIpString.matches("172.1[6-9].*")
+                            || clientIpString.startsWith("172.2")
+                            || clientIpString.matches("172.3[01].*")
+                            || clientIp.isLinkLocalAddress()
+                            || clientIp.isLoopbackAddress()) {
+                        isLocalNetworkRequest = true;
+                    }
                 }
             }
-            if (isLocalNetworkRequest) { // TODO: Change this to be !isLocalNetworkRequest
+
+            if (!isLocalNetworkRequest) {
                 String requestedEndpoint = exchange.getRequest().getURI().getPath();
                 log.warn("Blocked request from:  clientIp<"
-                        + clientIp + "> | endpoint<" + requestedEndpoint +">");
+                        + clientIpString + "> | endpoint<" + requestedEndpoint +">");
                 exchange.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
                 return exchange.getResponse().setComplete();
             }

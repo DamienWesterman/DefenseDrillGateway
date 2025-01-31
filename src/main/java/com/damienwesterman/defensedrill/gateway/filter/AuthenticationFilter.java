@@ -90,9 +90,12 @@ public class AuthenticationFilter
                     } else {
                         errorMessage = "Not Authorized";
                     }
+
+                    String requestedEndpoint = exchange.getRequest().getURI().getPath();
+
                     exchange.getResponse().getHeaders().set(
                         HttpHeaders.LOCATION,
-                        "/login?error=" + errorMessage);
+                        "/login?error=" + errorMessage + "&redirect=" + requestedEndpoint);
                 }
 
                 return exchange.getResponse().setComplete();

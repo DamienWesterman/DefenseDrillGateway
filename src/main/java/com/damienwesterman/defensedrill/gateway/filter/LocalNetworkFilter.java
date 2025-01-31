@@ -62,9 +62,7 @@ public class LocalNetworkFilter
                 if (null != clientIp) {
                     if (clientIpString.startsWith("192.168.")
                             || clientIpString.startsWith("10.")
-                            || clientIpString.matches("172.1[6-9].*")
-                            || clientIpString.startsWith("172.2")
-                            || clientIpString.matches("172.3[01].*")
+                            || clientIpString.matches("^172\\.(1[6-9]|2[0-9]|3[01])\\..*")
                             || clientIp.isLinkLocalAddress()
                             || clientIp.isLoopbackAddress()) {
                         isLocalNetworkRequest = true;

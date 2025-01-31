@@ -59,9 +59,10 @@ public class JwtService {
     private static final String CLAIMS_KEY_ROLES = "roles";
 
     /**
-     * TODO: doc comments
-     * @param serverHttpRequest
-     * @return
+     * Extract a string JWT from a client request.
+     *
+     * @param serverHttpRequest Client request
+     * @return String representation of the JWT
      */
     @NonNull
     public String extractToken(@NonNull ServerHttpRequest serverHttpRequest) {

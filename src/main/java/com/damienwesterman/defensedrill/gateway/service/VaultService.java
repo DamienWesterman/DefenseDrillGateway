@@ -24,19 +24,23 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.gateway;
+package com.damienwesterman.defensedrill.gateway.service;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.lang.NonNull;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillGatewayApplication {
-	// TODO: do the cert stuff and activate https (in prod) - and change port in prod
+/**
+ * Service interface to retrieve public/private jwt keys.
+ */
+public interface VaultService {
+    // TODO: In deployment, make profiles in Vault, which will change the endpoint for private key (and security probs)
+    final static String VAULT_ENDPOINT_JWT_PUBLIC_KEY = "secret/public";
+    final static String VAULT_KEY_JWT_PUBLIC_KEY = "jwtPublicKey";
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillGatewayApplication.class, args);
-	}
-
+    /**
+     * Retrieve the JWT public key.
+     *
+     * @return JWT public key
+     */
+    @NonNull
+	public String getJwtPublicKey();
 }

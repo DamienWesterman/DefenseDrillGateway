@@ -88,7 +88,7 @@ public class AuthenticationFilter
                     if (jwt.isBlank()) {
                         errorMessage = "Please%20Log%20In";
                     } else {
-                        errorMessage = "Not Authorized";
+                        errorMessage = "Not%20Authorized";
                     }
 
                     String requestedEndpoint = exchange.getRequest().getURI().getPath();
@@ -98,6 +98,7 @@ public class AuthenticationFilter
                         "/login?error=" + errorMessage + "&redirect=" + requestedEndpoint);
                 }
 
+                // Do not forward request
                 return exchange.getResponse().setComplete();
             }
 

@@ -75,6 +75,8 @@ public class LocalNetworkFilter
                 log.warn("Blocked request from:  clientIp<"
                         + clientIpString + "> | endpoint<" + requestedEndpoint +">");
                 exchange.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
+
+                // Do not forward request
                 return exchange.getResponse().setComplete();
             }
 

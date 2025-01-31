@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### HTTPS Cert ###
+src/main/resources/gateway-https.p12

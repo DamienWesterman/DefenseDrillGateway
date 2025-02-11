@@ -33,7 +33,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillGatewayApplication {
-	// TODO: do the cert stuff and activate https (in prod) - and change port in prod
 
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillGatewayApplication.class, args);

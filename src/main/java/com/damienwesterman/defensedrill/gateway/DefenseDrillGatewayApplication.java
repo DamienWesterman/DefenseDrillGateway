@@ -33,8 +33,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillGatewayApplication {
-	// TODO: do the cert stuff and activate https (in prod) - and change port in prod
-	// TODO: add another filter to api endpoint to make sure that only get requests are served (we don't want random USERs to be able to delete all records)
 
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillGatewayApplication.class, args);

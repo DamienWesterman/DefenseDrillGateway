@@ -68,12 +68,18 @@ public class JwtService {
     public String extractToken(@NonNull ServerHttpRequest serverHttpRequest) {
         // Check if using bearer token
         String cookieString = serverHttpRequest.getHeaders().getFirst(HttpHeaders.COOKIE);
-        if (null == cookieString || !cookieString.startsWith("jwt=")) {
+        if (null == cookieString || cookieString.isEmpty()) {
             // No authorization
             return "";
         }
 
-        return cookieString.substring(4); // "jwt=".size() = 4
+        for (String cookie : cookieString.split(";\\s*")) {
+            if (cookie.startsWith("jwt=")) {
+                return cookie.substring(4); // "jwt=".size() = 4
+            }
+        }
+
+        return ""; // "jwt=".size() = 4
     }
 
     /**

@@ -87,6 +87,8 @@ public class AuthenticationFilter
                     String errorMessage = "";
                     if (jwt.isBlank()) {
                         errorMessage = "Please%20Log%20In";
+                    } else if (jwtService.isTokenExpired(jwt)) {
+                        errorMessage = "Session%20Expired,%20Please%20Sign%20In%20Again";
                     } else {
                         errorMessage = "Not%20Authorized";
                     }

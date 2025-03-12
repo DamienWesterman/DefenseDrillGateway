@@ -46,6 +46,7 @@ import org.springframework.stereotype.Service;
 import com.damienwesterman.defensedrill.gateway.util.Constants;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
@@ -90,6 +91,32 @@ public class JwtService {
      */
     public boolean isTokenValid(@NonNull String jwt) {
         return Optional.ofNullable(getClaims(jwt)).isPresent();
+    }
+
+    /**
+     * Check if a JWT is expired.
+     * <br><br>
+     * !! NOTE !! Just because a token is not expired does NOT guarantee it is valid
+     *
+     * @param jwt String JWT
+     * @return true/false if the token has expired
+     */
+    public boolean isTokenExpired(@NonNull String jwt) {
+        if (jwt.isBlank()) {
+            return false;
+        }
+
+        try {
+            Jwts.parser()
+                .verifyWith(generatePublicKey())
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload();
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

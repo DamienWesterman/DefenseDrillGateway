@@ -87,15 +87,35 @@ public class AuthenticationFilter
                     String errorMessage = "";
                     if (jwt.isBlank()) {
                         errorMessage = "Please%20Log%20In";
+                    } else if (jwtService.isTokenExpired(jwt)) {
+                        errorMessage = "Session%20Expired,%20Please%20Sign%20In%20Again";
                     } else {
                         errorMessage = "Not%20Authorized";
                     }
 
                     String requestedEndpoint = exchange.getRequest().getURI().getPath();
 
-                    exchange.getResponse().getHeaders().set(
-                        HttpHeaders.LOCATION,
-                        "/login?error=" + errorMessage + "&redirect=" + requestedEndpoint);
+                    if (requestedEndpoint.startsWith("/htmx")) {
+                        // If they were trying to access an HTMX endpoint, we need to specify the redirect
+                        // endpoint and make sure to redirect their entire page
+
+                        String redirectEndpoint = "/";
+                        if (requestedEndpoint.startsWith("/htmx/drill")) {
+                            redirectEndpoint = "/modify/drill";
+                        } else if (requestedEndpoint.startsWith("/htmx/category")) {
+                            redirectEndpoint = "/modify/category";
+                        } else if (requestedEndpoint.startsWith("/htmx/sub_category")) {
+                            redirectEndpoint = "/modify/sub_category";
+                        }
+
+                        exchange.getResponse().getHeaders().set(
+                            "HX-Redirect",
+                            "/login?error=" + errorMessage + "&redirect=" + redirectEndpoint);
+                    } else {
+                        exchange.getResponse().getHeaders().set(
+                            HttpHeaders.LOCATION,
+                            "/login?error=" + errorMessage + "&redirect=" + requestedEndpoint);
+                    }
                 }
 
                 // Do not forward request

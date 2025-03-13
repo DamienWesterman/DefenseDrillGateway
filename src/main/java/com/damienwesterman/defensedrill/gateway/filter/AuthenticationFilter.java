@@ -106,6 +106,8 @@ public class AuthenticationFilter
                             redirectEndpoint = "/modify/category";
                         } else if (requestedEndpoint.startsWith("/htmx/sub_category")) {
                             redirectEndpoint = "/modify/sub_category";
+                        } else if (requestedEndpoint.startsWith("/htmx/user")) {
+                            redirectEndpoint = "/modify/user";
                         }
 
                         exchange.getResponse().getHeaders().set(

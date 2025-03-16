@@ -94,7 +94,8 @@ public class AuthenticationFilter
                         errorMessage = "Not%20Authorized";
                     }
 
-                    String requestedEndpoint = exchange.getRequest().getURI().getPath();
+                    // Sanitize user input
+                    String requestedEndpoint = Utility.convertToUri(exchange.getRequest().getURI().getPath());
 
                     if (requestedEndpoint.startsWith("/htmx")) {
                         // If they were trying to access an HTMX endpoint, we need to specify the redirect
@@ -113,11 +114,11 @@ public class AuthenticationFilter
 
                         exchange.getResponse().getHeaders().set(
                             "HX-Redirect",
-                            Utility.convertToUri("/login?error=" + errorMessage + "&redirect=" + redirectEndpoint));
+                            "/login?error=" + errorMessage + "&redirect=" + redirectEndpoint);
                     } else {
                         exchange.getResponse().getHeaders().set(
                             HttpHeaders.LOCATION,
-                            Utility.convertToUri("/login?error=" + errorMessage + "&redirect=" + requestedEndpoint));
+                            "/login?error=" + errorMessage + "&redirect=" + requestedEndpoint);
                     }
                 }
 

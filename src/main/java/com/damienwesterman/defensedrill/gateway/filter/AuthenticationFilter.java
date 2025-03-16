@@ -39,6 +39,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import com.damienwesterman.defensedrill.gateway.service.JwtService;
+import com.damienwesterman.defensedrill.gateway.util.Utility;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -112,11 +113,11 @@ public class AuthenticationFilter
 
                         exchange.getResponse().getHeaders().set(
                             "HX-Redirect",
-                            "/login?error=" + errorMessage + "&redirect=" + redirectEndpoint);
+                            Utility.convertToUri("/login?error=" + errorMessage + "&redirect=" + redirectEndpoint));
                     } else {
                         exchange.getResponse().getHeaders().set(
                             HttpHeaders.LOCATION,
-                            "/login?error=" + errorMessage + "&redirect=" + requestedEndpoint);
+                            Utility.convertToUri("/login?error=" + errorMessage + "&redirect=" + requestedEndpoint));
                     }
                 }
 

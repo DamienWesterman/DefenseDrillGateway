@@ -95,7 +95,7 @@ public class AuthenticationFilter
                     }
 
                     // Sanitize user input
-                    String requestedEndpoint = Utility.convertToUri(exchange.getRequest().getURI().getPath());
+                    String requestedEndpoint = exchange.getRequest().getURI().getPath();
 
                     if (requestedEndpoint.startsWith("/htmx")) {
                         // If they were trying to access an HTMX endpoint, we need to specify the redirect
@@ -118,7 +118,8 @@ public class AuthenticationFilter
                     } else {
                         exchange.getResponse().getHeaders().set(
                             HttpHeaders.LOCATION,
-                            "/login?error=" + errorMessage + "&redirect=" + requestedEndpoint);
+                            "/login?error=" + errorMessage + "&redirect="
+                                + Utility.convertToUri(requestedEndpoint));
                     }
                 }
 
